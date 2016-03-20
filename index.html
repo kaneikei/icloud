@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='reminder'>
+<head>
+	<meta charset="UTF-8">
+	<title>提醒事项</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/angular.js"></script>
+	<script src="js/index.js"></script>
+</head>
+<body ng-controller='rectrl'>
+	<div class="zuo">
+		<div class="title">
+			<span>iCloud</span><span class='tixing'>&nbsp;&nbsp;提醒事项</span><span ng-click='addshijian()'><i class="iconfont">&#xe6ad;</i></span>
+		</div>
+		<div class="yijihua">
+			<div class="naozhong"></div>
+			<span>已计划</span>
+		</div>
+		<ul>
+			<li ng-repeat='value in shijianliebiao track by $index' ng-click='huoqu($index)' ng-class='{active:cindex==$index}'>
+				<!-- <span ng-class="shijianliebiao[$index].color"></span> -->
+				<span id='xiaoyuan' ng-class='value.color'></span>
+				<input type="text" ng-blur="save()" ng-model="value.name">
+			</li>
+		</ul>
+	</div>
+	<div class="you">
+		<div class="sousuo">
+			<div class="fangdajing"></div>
+			<input type="text" class='search' ng-model='key'>
+		</div>
+		<div ng-show='key'>
+			<h1>这是"{{key}}"的搜索结果</h1>
+			<dl ng-repeat="value in shijianliebiao | chazhao:key">
+				<dt>{{value.name}}</dt>
+				<dd ng-repeat='r in value.items'>{{r.title}}</dd>
+			</dl>
+		</div>
+		<div ng-hide='key'>
+			<input type="checkbox" id="xuangxiangka">
+			<div class="hezi">
+				<div class="xiaohezi">
+					<input  type="text" ng-model="aaaa" class='heziinput' ng-class="shijianliebiao[cindex].color">
+					<div class='liebiaoyanse'>列表颜色</div>
+					<div class="sekuai">
+						<span id='xiaoyuan' ng-repeat="value in color" class="yuandian" ng-class="value" ng-click="shijianliebiao[cindex].color = value"></span>
+					</div>
+					<span ng-click='clearitem()' class='shanchu'>删除</span>
+					<span ng-click='showSelect();huanyuan(cindex)' class='shanchu'>取消</span>
+					<span ng-click='finish()' class='shanchu'>完成</span>
+				</div>
+			</div>
+			<div class="h" ng-class="shijianliebiao[cindex].color">{{shijianliebiao[cindex].name}} <span class="xuanxiang" ng-click="showSelect()">选项</span> </div>
+			<ul class='liemu'>
+				<li id="end_title" class="done-item">已完成<span> {{countdone()}} </span>项</li>
+				<li ng-repeat='value in shijianliebiao[cindex].items track by $index' ng-show="value.isDone" id='wanc'>
+					<!-- <span ng-click="value.isDone = false;save()">{{value.isDone}}</span> --> 
+					<span class="quanquan" ng-class="shijianliebiao[cindex].color" ng-click="change($index)"></span>
+					<input type="text" ng-blur="save()" ng-model="value.title">
+					<span ng-click="deleteTodo($index)">删除</span> 
+					<span class="wanyuans">
+						<span></span>
+					</span>	
+				</li>
+			</ul>
+			<ul class='xinzul'>
+				<li ng-repeat='value in shijianliebiao[cindex].items track by $index' ng-hide="value.isDone" ng-class="shijianliebiao[$index].color" id='xinz'>
+					<span ng-click="value.isDone = true;save()" ng-class="shijianliebiao[cindex].color" class='fal'>{{value.isDone}}</span> 
+					<span class='tuyuan'></span>
+					<input type="text" ng-blur="save()" ng-model="value.title">
+					<span ng-click="deleteTodo($index)">删除</span> 
+				</li>
+			</ul>
+			<div class="new-item" ng-click="addTodo()">新项目...</div>
+		</div>
+	</div>
+</body>
+</html>
